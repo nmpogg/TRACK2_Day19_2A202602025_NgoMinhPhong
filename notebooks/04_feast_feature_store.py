@@ -185,7 +185,10 @@ else:
 import pandas as pd
 entity_df = pd.DataFrame({
     "user_id": ["u_001", "u_002", "u_003"],
-    "event_timestamp": [NOW - timedelta(hours=2), NOW - timedelta(hours=1), NOW],
+    # The synthetic profile source has one snapshot per user at NOW. Querying
+    # before that snapshot correctly yields no row, so use the snapshot time
+    # for all three entities to demonstrate a complete 3-row PIT join.
+    "event_timestamp": [NOW, NOW, NOW],
 })
 
 historical = fs.get_historical_features(
